@@ -60,7 +60,7 @@ class Comment extends React.Component<Props, State> {
   }
   render() {
     return (
-      <Card>
+      <div>
         <CardHeader
           avatar={
             this.props.user.photoUrl ? (
@@ -87,7 +87,7 @@ class Comment extends React.Component<Props, State> {
             </IconButton>
           </CardActions>
         ) : null}
-      </Card>
+      </div>
     );
   }
 }
