@@ -21,10 +21,7 @@
     "typeface-roboto": "^0.0.35"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,json,css}": [
-      "prettier --single-quote --write",
-      "git add"
-    ]
+    "src/**/*.{js,jsx,json,css}": ["prettier --double-quote --write", "git add"]
   },
   "scripts": {
     "start": "react-scripts start",
