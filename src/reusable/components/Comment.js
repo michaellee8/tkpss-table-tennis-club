@@ -17,6 +17,12 @@ import red from 'material-ui/colors/red';
 import FavoriteIcon from 'material-ui-icons/Favorite';
 import ShareIcon from 'material-ui-icons/Share';
 import DeleteIcon from 'material-ui-icons/Delete';
+import List, {
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  ListItemAvatar
+} from 'material-ui/List';
 
 type Props = {
   user: User,
@@ -60,34 +66,35 @@ class Comment extends React.Component<Props, State> {
   }
   render() {
     return (
-      <div>
-        <CardHeader
-          avatar={
-            this.props.user.photoUrl ? (
-              <Avatar src={this.props.user.photoUrl} />
-            ) : (
-              <Avatar>{this.props.user.displayName.charAt(0)}</Avatar>
-            )
+      <ListItem dense>
+        <ListItemAvatar
+          onClick={() => this.props.interactionHandler('navToWriter')}
+        >
+          {this.props.user.photoUrl ? (
+            <Avatar src={this.props.user.photoUrl} />
+          ) : (
+            <Avatar>{this.props.user.displayName.charAt(0)}</Avatar>
+          )}
+        </ListItemAvatar>
+        <ListItemText
+          primary={
+            <a onClick={() => this.props.interactionHandler('navToWriter')}>
+              {this.props.user.displayName}
+            </a>
           }
-          title={this.props.user.displayName}
-          subheader={this.props.content}
+          secondary={this.props.content}
         />
         {this.props.isAdmin ? (
-          <CardActions>
-            <div
-              style={{
-                flex: '1 1 auto'
-              }}
-            />
+          <ListItemSecondaryAction>
             <IconButton
               onClick={() => this.props.interactionHandler('delete')}
               aria-label="Delete"
             >
               <DeleteIcon />
             </IconButton>
-          </CardActions>
+          </ListItemSecondaryAction>
         ) : null}
-      </div>
+      </ListItem>
     );
   }
 }

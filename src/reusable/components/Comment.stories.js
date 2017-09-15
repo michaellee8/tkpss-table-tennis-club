@@ -1,15 +1,17 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { storiesOf } from '@storybook/react';
 import Comment from './Comment';
 
 function handler(type: string) {
   switch (type) {
     case 'delete':
       action('delete comment');
+      console.log('delete comment');
       break;
     case 'navToWriter':
       action('go to comment writer');
+      console.log('go to comment writer');
       break;
     default:
   }
