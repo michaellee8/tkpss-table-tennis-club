@@ -23,6 +23,7 @@ import List, {
   ListItemText,
   ListItemAvatar
 } from "material-ui/List";
+import Linkify from "react-linkify";
 
 class Comment extends React.Component {
   props: {
@@ -56,7 +57,7 @@ class Comment extends React.Component {
               {this.props.user.displayName}
             </a>
           }
-          secondary={this.props.content}
+          secondary={<Linkify>{this.props.content}</Linkify>}
         />
         {this.props.isAdmin ? (
           <ListItemSecondaryAction>
