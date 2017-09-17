@@ -5,8 +5,8 @@ export type Post = {
   mediaUrls: Array<string>,
   content: string,
   title: string,
-  subtitle: string,
-  views: any,
-  reactions: any,
-  mentioned: any
+  comments:Array<Comment>
+  mentioned: any,
+  authorId: string,
+  timestamp: number
 };
