@@ -61,6 +61,16 @@ export default class Post extends React.Component {
             {this.props.post.title}
           </Typography>
           <Typography component="p">{this.props.post.content}</Typography>
+          <Typography component="p">
+            {this.props.mentioned.map(user => (
+              <a
+                style={{ color: "inherit", "text-decoration": "inherit" }}
+                onClick={() => this.props.actionHandler("navToUser", user.id)}
+              >
+                {user.displayName}
+              </a>
+            ))}
+          </Typography>
         </CardContent>
         <Collapse>
           <List>
@@ -75,10 +85,7 @@ export default class Post extends React.Component {
                       this.props.actionHandler("deleteComment", comment.id);
                       break;
                     case "navToWriter":
-                      this.props.actionHandler(
-                        "navToCommenter",
-                        comment.authorId
-                      );
+                      this.props.actionHandler("navToUser", comment.authorId);
                       break;
                     default:
                   }
