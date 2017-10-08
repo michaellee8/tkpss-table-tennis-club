@@ -1,11 +1,9 @@
-import type { Comment } from "./Comment";
-
 export type User = {
   id: string,
-  searchName: string,
+  email: string,
   displayName: string,
   photoUrl: string,
-  privllageLevel: number,
+  permission: number,
   stats: {
     hp: number,
     atk: number,
@@ -14,5 +12,9 @@ export type User = {
     spe: number,
     int: number
   },
-  comments: Array<Comment>
+  score: number,
+  remark: string,
+  createTime: number,
+  lastLoginTime: number,
+  joinYear: number
 };

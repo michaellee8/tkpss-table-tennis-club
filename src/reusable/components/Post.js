@@ -25,9 +25,6 @@ export default class Post extends React.Component {
   props: {
     post: Post,
     author: User,
-    viewer: Array<User>,
-    reacters: Array<{ type: "string", user: User }>,
-    mentioned: Array<User>,
     comments: Array<{ content: string, user: User }>,
     isAdmin: boolean,
     actionHandler: (type: string, payload: any) => undefined
@@ -37,40 +34,17 @@ export default class Post extends React.Component {
       <Card>
         <CardHeader
           avatar={
-            this.props.user.photoUrl ? (
+            this.props.author.photoUrl ? (
               <Avatar src={this.props.author.photoUrl} />
             ) : (
               <Avatar>{this.props.author.displayName.charAt(0)}</Avatar>
             )
           }
           title={this.props.user.displayName}
-          subheader={<FormattedRelative value={this.props.post.timestamp} />}
+          subheader={<FormattedRelative value={this.props.post.createTime} />}
         />
-        <CardMedia>
-          <GridList cols={2.5}>
-            this.props.post.mediaUrls.map(url=>
-            <GridListTile key={url}>
-              <a href={url}>
-                <img src={url} />
-              </a>
-            </GridListTile>)
-          </GridList>
-        </CardMedia>
         <CardContent>
-          <Typography type="headline" component="h2">
-            {this.props.post.title}
-          </Typography>
           <Typography component="p">{this.props.post.content}</Typography>
-          <Typography component="p">
-            {this.props.mentioned.map(user => (
-              <a
-                style={{ color: "inherit", "text-decoration": "inherit" }}
-                onClick={() => this.props.actionHandler("navToUser", user.id)}
-              >
-                {user.displayName}
-              </a>
-            ))}
-          </Typography>
         </CardContent>
         <Collapse>
           <List>
