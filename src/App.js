@@ -10,6 +10,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import AppDrawer from "./AppDrawer";
 import Async from "react-promise";
 import UserId from "./routes/User-Id";
+import UsersList from "./routes/Users-List";
+import Posts from "./routes/Posts";
 
 const styles = theme => ({
   root: {
@@ -44,6 +46,8 @@ class App extends Component {
             expand={this.state.expand}
             handleClose={() => this.setState({ expand: false })}
           />
+          <Route exact path="/users" component={UsersList} />
+          <Route exact path="/admin-posts" component={Posts} />
           <Route path="/users/:id" component={UserId} />
         </div>
       </Router>

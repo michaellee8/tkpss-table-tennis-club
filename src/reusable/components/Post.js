@@ -21,18 +21,18 @@ import Typography from "material-ui/Typography";
 import Linkify from "react-linkify";
 import Comment from "./Comment";
 
-export default class Post extends React.Component {
+export default class extends React.Component {
   props: {
     post: Post,
     author: User,
-    comments: Array<{ content: string, user: User }>,
+    // comments: Array<{ content: string, user: User }>,
     isAdmin: boolean,
     actionHandler: (type: string, payload: any) => undefined
   };
   render() {
     return (
       <Card>
-        <CardHeader
+        {/* <CardHeader
           avatar={
             this.props.author.photoUrl ? (
               <Avatar src={this.props.author.photoUrl} />
@@ -42,11 +42,11 @@ export default class Post extends React.Component {
           }
           title={this.props.user.displayName}
           subheader={<FormattedRelative value={this.props.post.createTime} />}
-        />
+        /> */}
         <CardContent>
           <Typography component="p">{this.props.post.content}</Typography>
         </CardContent>
-        <Collapse>
+        {/* <Collapse>
           <List>
             {this.props.comments.map(comment => (
               <Comment
@@ -67,7 +67,7 @@ export default class Post extends React.Component {
               />
             ))}
           </List>
-        </Collapse>
+        </Collapse> */}
       </Card>
     );
   }

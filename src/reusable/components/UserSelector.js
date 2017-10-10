@@ -67,7 +67,7 @@ export default class UserSelector extends React.Component<Props, State> {
               </ListItemAvatar>
               <ListItemText
                 primary={user.displayName}
-                secondary={"@" + user.searchName}
+                secondary={"since " + user.joinYear}
               />
             </ListItem>
           ))}
