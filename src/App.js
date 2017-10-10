@@ -9,6 +9,7 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import AppDrawer from "./AppDrawer";
 import Async from "react-promise";
+import UserId from "./routes/User-Id";
 
 const styles = theme => ({
   root: {
@@ -43,29 +44,7 @@ class App extends Component {
             expand={this.state.expand}
             handleClose={() => this.setState({ expand: false })}
           />
-          <Route
-            path="/users/:id"
-            component={({ match }) => (
-              <Async
-                promise={firebase
-                  .firestore()
-                  .collection("users")
-                  .doc(match.params.id)
-                  .get()}
-                then={doc => {
-                  if (doc.exists) {
-                    return <User user={doc.data()} />;
-                  } else {
-                    return <div>User not found!</div>;
-                  }
-                }}
-                catch={err => {
-                  alert("error: " + err);
-                  return <div>Error</div>;
-                }}
-              />
-            )}
-          />
+          <Route path="/users/:id" component={UserId} />
         </div>
       </Router>
     );

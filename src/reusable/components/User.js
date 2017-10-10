@@ -50,11 +50,11 @@ export default class extends React.Component {
         </CardContent>
         <CardContent>
           <RadarChart
-            cx={300}
-            cy={250}
-            outerRadius={150}
-            width={600}
-            height={500}
+            cx={170}
+            cy={170}
+            outerRadius={100}
+            width={340}
+            height={340}
             data={Object.keys(this.props.user.stats).map(key => ({
               key: key.toUpperCase() + " " + this.props.user.stats[key],
               stat: this.props.user.stats[key]
