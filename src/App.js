@@ -28,6 +28,28 @@ const styles = theme => ({
 });
 
 class App extends Component {
+  componentWillMount() {
+    this.authObserver = firebase.auth().onAuthStateChanged(() => {
+      if (firebase.auth().currentUser) {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(firebase.auth().currentUser.uid)
+          .get()
+          .then(doc => {
+            window.currentUserPermissionLevel = doc.data().permission;
+            this.forceUpdate();
+          })
+          .catch(err => console.log(err));
+      } else {
+        window.currentUserPermissionLevel = null;
+        this.forceUpdate();
+      }
+    });
+  }
+  componentWillUnmount() {
+    this.authObserver();
+  }
   state: {
     expand: boolean
   };

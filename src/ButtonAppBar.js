@@ -23,9 +23,6 @@ const styles = theme => ({
   }
 });
 class ButtonAppBar extends React.Component {
-  componentWillMount() {
-    firebase.auth().onAuthStateChanged();
-  }
   render() {
     return (
       <div className={this.props.classes.root}>

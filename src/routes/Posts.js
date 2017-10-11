@@ -107,22 +107,25 @@ class PostsInternal extends React.Component {
               ? this.setState({ loading: true }, this.fetchPosts())
               : null}
         />
-        <Button
-          fab
-          color="primary"
-          aria-label="add"
-          style={{
-            margin: 0,
-            top: "auto",
-            right: 80,
-            bottom: 80,
-            left: "auto",
-            position: "fixed"
-          }}
-          onClick={() => this.setState({ openNewPost: true })}
-        >
-          <AddIcon />
-        </Button>
+        {window.currentUserPermissionLevel ? (
+          <Button
+            fab
+            color="primary"
+            aria-label="add"
+            style={{
+              margin: 0,
+              top: "auto",
+              right: 80,
+              bottom: 80,
+              left: "auto",
+              position: "fixed"
+            }}
+            onClick={() => this.setState({ openNewPost: true })}
+          >
+            <AddIcon />
+          </Button>
+        ) : null}
+
         <PostNew
           open={this.state.openNewPost}
           onClose={() => this.setState({ openNewPost: false })}
