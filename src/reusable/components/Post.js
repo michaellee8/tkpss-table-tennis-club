@@ -44,7 +44,9 @@ export default class extends React.Component {
           subheader={<FormattedRelative value={this.props.post.createTime} />}
         /> */}
         <CardContent>
-          <Typography component="p">{this.props.post.content}</Typography>
+          {/* <Typography component="p"> */}
+          {this.props.post.content}
+          {/* </Typography> */}
         </CardContent>
         {/* <Collapse>
           <List>

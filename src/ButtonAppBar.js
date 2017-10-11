@@ -22,53 +22,58 @@ const styles = theme => ({
     marginRight: 20
   }
 });
-
-function ButtonAppBar(props) {
-  const classes = props.classes;
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            className={classes.menuButton}
-            color="contrast"
-            aria-label="Menu"
-            onClick={props.onExpandClick}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography type="title" color="inherit" className={classes.flex}>
-            Table Tennis
-          </Typography>
-          {!firebase.auth().currentUser ? (
-            <Button
+class ButtonAppBar extends React.Component {
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged();
+  }
+  render() {
+    return (
+      <div className={this.props.classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              className={this.props.classes.menuButton}
               color="contrast"
-              onClick={() => {
-                firebase
-                  .auth()
-                  .signInWithRedirect(new firebase.auth.FacebookAuthProvider());
-              }}
+              aria-label="Menu"
+              onClick={this.props.onExpandClick}
             >
-              Login
-            </Button>
-          ) : (
-            <Button
-              color="contrast"
-              onClick={() => {
-                firebase.auth().signOut();
-              }}
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              type="title"
+              color="inherit"
+              className={this.props.classes.flex}
             >
-              Logout
-            </Button>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+              Table Tennis
+            </Typography>
+            {!firebase.auth().currentUser ? (
+              <Button
+                color="contrast"
+                onClick={() => {
+                  firebase
+                    .auth()
+                    .signInWithRedirect(
+                      new firebase.auth.FacebookAuthProvider()
+                    );
+                }}
+              >
+                Login
+              </Button>
+            ) : (
+              <Button
+                color="contrast"
+                onClick={() => {
+                  firebase.auth().signOut();
+                }}
+              >
+                Logout
+              </Button>
+            )}
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
 }
-
-ButtonAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(ButtonAppBar);

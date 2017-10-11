@@ -85,11 +85,12 @@ class PostsInternal extends React.Component {
   }
   render() {
     return (
-      <div>
-        <List>
+      <div style={{ width: "100%" }}>
+        <List style={{ width: "100%" }}>
           {this.state.posts.map((post, index) => (
-            <ListItem key={post.id}>
+            <ListItem style={{ width: "100%" }} divider={false} key={post.id}>
               <Post
+                style={{ width: "100%" }}
                 key={post.id}
                 post={post.data()}
                 author={this.state.authors[index].data()}
@@ -113,8 +114,8 @@ class PostsInternal extends React.Component {
           style={{
             margin: 0,
             top: "auto",
-            right: 40,
-            bottom: 40,
+            right: 80,
+            bottom: 80,
             left: "auto",
             position: "fixed"
           }}
