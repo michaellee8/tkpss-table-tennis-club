@@ -7,6 +7,7 @@ import Typography from "material-ui/Typography";
 import Button from "material-ui/Button";
 import IconButton from "material-ui/IconButton";
 import MenuIcon from "material-ui-icons/Menu";
+import firebase from "firebase";
 
 const styles = theme => ({
   root: {
@@ -39,7 +40,16 @@ function ButtonAppBar(props) {
           <Typography type="title" color="inherit" className={classes.flex}>
             Table Tennis
           </Typography>
-          <Button color="contrast">Login</Button>
+          <Button
+            color="contrast"
+            onClick={() => {
+              firebase
+                .auth()
+                .signInWithRedirect(new firebase.auth.FacebookAuthProvider());
+            }}
+          >
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
