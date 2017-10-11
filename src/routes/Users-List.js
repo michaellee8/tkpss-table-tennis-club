@@ -3,6 +3,11 @@ import UserSelector from "../reusable/components/UserSelector";
 import { withRouter } from "react-router";
 import firebase from "firebase";
 
+function validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
 class UsersListInternal extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +27,24 @@ class UsersListInternal extends React.Component {
         .firestore()
         .collection("users")
         .where("joinYear", "==", parseInt(this.state.searchText))
+        .get()
+        .then(querySnapshot => {
+          var users = [];
+          querySnapshot.forEach(doc => {
+            var obj = doc.data();
+            obj.id = doc.id;
+            users.push(obj);
+          });
+          this.setState({ users });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else if (this.state.searchText && validateEmail(this.state.searchText)) {
+      firebase
+        .firestore()
+        .collection("users")
+        .where("email", "==", this.state.searchText)
         .get()
         .then(querySnapshot => {
           var users = [];
