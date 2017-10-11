@@ -5,11 +5,14 @@ import Post from "../reusable/components/Post";
 import VisibilitySensor from "react-visibility-sensor";
 import firebase from "firebase";
 import List, { ListItem } from "material-ui/List";
+import Button from "material-ui/Button";
+import AddIcon from "material-ui-icons/Add";
+import PostNew from "./Post-New";
 
 class PostsInternal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { posts: [], authors: [], loading: false };
+    this.state = { posts: [], authors: [], loading: false, openNewPost: false };
   }
   fetchPosts() {
     if (
@@ -102,6 +105,26 @@ class PostsInternal extends React.Component {
             isVisible === true
               ? this.setState({ loading: true }, this.fetchPosts())
               : null}
+        />
+        <Button
+          fab
+          color="primary"
+          aria-label="add"
+          style={{
+            margin: 0,
+            top: "auto",
+            right: 40,
+            bottom: 40,
+            left: "auto",
+            position: "fixed"
+          }}
+          onClick={() => this.setState({ openNewPost: true })}
+        >
+          <AddIcon />
+        </Button>
+        <PostNew
+          open={this.state.openNewPost}
+          onClose={() => this.setState({ openNewPost: false })}
         />
       </div>
     );

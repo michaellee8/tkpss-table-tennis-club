@@ -16,7 +16,12 @@ export default class extends React.Component {
       .collection("adminPosts")
       .add({
         content: this.state.content,
-        createTime: Math.floor(Date.now() / 1000)
+        createTime: Math.floor(Date.now() / 1000),
+        authorId: firebase.auth().currentUser.uid,
+        author: firebase
+          .firestore()
+          .collection("users")
+          .doc(firebase.auth().currentUser.uid)
       })
       .then(() => this.props.onClose())
       .catch(err => {
@@ -24,23 +29,24 @@ export default class extends React.Component {
         this.setState({ title: "Create post fail, please try again" });
       });
   render() {
-    <Dialog open={this.props.open}>
-      <DialogTitle>{this.state.title}</DialogTitle>
-      <TextField
-        label="Content"
-        placeholder="Content"
-        className={classes.textField}
-        value={this.state.content}
-        onChange={event => this.setState({ content: event.target.value })}
-      />
-      <DialogActions>
-        <Button onClick={this.handleCancel} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={this.handleConfirm} color="primary">
-          Confirm
-        </Button>
-      </DialogActions>
-    </Dialog>;
+    return (
+      <Dialog open={this.props.open}>
+        <DialogTitle>{this.state.title}</DialogTitle>
+        <TextField
+          label="Content"
+          placeholder="Content"
+          value={this.state.content}
+          onChange={event => this.setState({ content: event.target.value })}
+        />
+        <DialogActions>
+          <Button onClick={this.handleCancel} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={this.handleConfirm} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
   }
 }
