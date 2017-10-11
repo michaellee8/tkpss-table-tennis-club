@@ -4,6 +4,7 @@ import setState from "react-state-promise";
 import Post from "../reusable/components/Post";
 import VisibilitySensor from "react-visibility-sensor";
 import firebase from "firebase";
+import List, { ListItem } from "material-ui/List";
 
 class PostsInternal extends React.Component {
   constructor(props) {
@@ -82,15 +83,20 @@ class PostsInternal extends React.Component {
   render() {
     return (
       <div>
-        {this.state.posts.map((post, index) => (
-          <Post
-            key={post.id}
-            post={post.data()}
-            author={this.state.authors[index].data()}
-            isAdmin={false}
-            actionHandler={(type, payload) => undefined}
-          />
-        ))}
+        <List>
+          {this.state.posts.map((post, index) => (
+            <ListItem key={post.id}>
+              <Post
+                key={post.id}
+                post={post.data()}
+                author={this.state.authors[index].data()}
+                isAdmin={false}
+                actionHandler={(type, payload) => undefined}
+              />
+            </ListItem>
+          ))}
+        </List>
+
         <VisibilitySensor
           onChange={isVisible =>
             isVisible === true
