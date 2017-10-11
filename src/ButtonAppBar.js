@@ -40,16 +40,27 @@ function ButtonAppBar(props) {
           <Typography type="title" color="inherit" className={classes.flex}>
             Table Tennis
           </Typography>
-          <Button
-            color="contrast"
-            onClick={() => {
-              firebase
-                .auth()
-                .signInWithRedirect(new firebase.auth.FacebookAuthProvider());
-            }}
-          >
-            Login
-          </Button>
+          {!firebase.auth().currentUser ? (
+            <Button
+              color="contrast"
+              onClick={() => {
+                firebase
+                  .auth()
+                  .signInWithRedirect(new firebase.auth.FacebookAuthProvider());
+              }}
+            >
+              Login
+            </Button>
+          ) : (
+            <Button
+              color="contrast"
+              onClick={() => {
+                firebase.auth().signOut();
+              }}
+            >
+              Logout
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </div>

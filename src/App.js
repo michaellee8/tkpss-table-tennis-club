@@ -48,8 +48,8 @@ class App extends Component {
           />
           <Route exact path="/users" component={UsersList} />
           <Route exact path="/admin-posts" component={Posts} />
+          <Route exact path="/" component={Posts} />
           <Route path="/users/:id" component={UserId} />
-          <Route component={UsersList} />
         </div>
       </Router>
     );
