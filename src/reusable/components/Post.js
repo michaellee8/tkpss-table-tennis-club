@@ -31,8 +31,8 @@ export default class extends React.Component {
   };
   render() {
     return (
-      <Card>
-        {/* <CardHeader
+      <Card style={{ width: "100%" }}>
+        <CardHeader
           avatar={
             this.props.author.photoUrl ? (
               <Avatar src={this.props.author.photoUrl} />
@@ -40,13 +40,13 @@ export default class extends React.Component {
               <Avatar>{this.props.author.displayName.charAt(0)}</Avatar>
             )
           }
-          title={this.props.user.displayName}
-          subheader={<FormattedRelative value={this.props.post.createTime} />}
-        /> */}
+          title={this.props.author.displayName}
+          subheader={
+            <FormattedRelative value={this.props.post.createTime * 1000} />
+          }
+        />
         <CardContent>
-          {/* <Typography component="p"> */}
-          {this.props.post.content}
-          {/* </Typography> */}
+          <Typography component="p">{this.props.post.content}</Typography>
         </CardContent>
         {/* <Collapse>
           <List>

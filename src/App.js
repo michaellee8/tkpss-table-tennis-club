@@ -12,6 +12,7 @@ import Async from "react-promise";
 import UserId from "./routes/User-Id";
 import UsersList from "./routes/Users-List";
 import Posts from "./routes/Posts";
+import { IntlProvider } from "react-intl";
 
 const styles = theme => ({
   root: {
@@ -60,19 +61,22 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
-          <ButtonAppBar
-            onExpandClick={() => this.setState({ expand: !this.state.expand })}
-          />
-          <AppDrawer
-            expand={this.state.expand}
-            handleClose={() => this.setState({ expand: false })}
-          />
-          <Route exact path="/users" component={UsersList} />
-          <Route exact path="/admin-posts" component={Posts} />
-          <Route exact path="/" component={Posts} />
-          <Route path="/users/:id" component={UserId} />
-        </div>
+        <IntlProvider locale="en">
+          <div>
+            <ButtonAppBar
+              onExpandClick={() =>
+                this.setState({ expand: !this.state.expand })}
+            />
+            <AppDrawer
+              expand={this.state.expand}
+              handleClose={() => this.setState({ expand: false })}
+            />
+            <Route exact path="/users" component={UsersList} />
+            <Route exact path="/admin-posts" component={Posts} />
+            <Route exact path="/" component={Posts} />
+            <Route path="/users/:id" component={UserId} />
+          </div>
+        </IntlProvider>
       </Router>
     );
   }
