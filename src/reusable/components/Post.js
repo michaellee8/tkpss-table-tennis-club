@@ -20,6 +20,8 @@ import { GridList, GridListTile } from "material-ui/GridList";
 import Typography from "material-ui/Typography";
 import Linkify from "react-linkify";
 import Comment from "./Comment";
+import DeleteIcon from "material-ui-icons/Delete";
+import IconButton from "material-ui/IconButton";
 
 export default class extends React.Component {
   props: {
@@ -48,11 +50,21 @@ export default class extends React.Component {
         <CardContent>
           <Typography component="p">{this.props.post.content}</Typography>
         </CardContent>
+        <CardActions>
+          <div
+            style={{
+              flex: "1 1 auto"
+            }}
+          />
+          <IconButton onClick={() => this.props.actionHandler("delete")}>
+            <DeleteIcon />
+          </IconButton>
+        </CardActions>
         {/* <Collapse>
           <List>
             {this.props.comments.map(comment => (
               <Comment
-                user={comment.user}
+                user={comment.author}
                 isAdmin={this.props.isAdmin}
                 content={comment.content}
                 interactionHandler={(type: string) => {

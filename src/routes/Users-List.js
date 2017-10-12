@@ -16,6 +16,9 @@ class UsersListInternal extends React.Component {
   componentDidMount() {
     this.search();
   }
+  componentWillMount() {
+    this.search();
+  }
   search = () => {
     if (
       this.state.searchText &&

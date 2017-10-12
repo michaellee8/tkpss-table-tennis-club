@@ -17,9 +17,10 @@ class PostsInternal extends React.Component {
   fetchPosts() {
     if (
       this.state.posts &&
-      typeof this.state.posts === "array" &&
+      this.state.posts.length &&
       this.state.posts.length > 0
     ) {
+      console.log(this.state.posts[this.state.posts.length - 1]);
       setState(this, (prevState, props) => ({
         loading: true
       }))
@@ -28,7 +29,7 @@ class PostsInternal extends React.Component {
             .firestore()
             .collection("adminPosts")
             .orderBy("createTime", "desc")
-            .startAfter(this.state.posts[this.state.posts.length - 1])
+            .startAfter(state.posts[state.posts.length - 1])
             .limit(5)
             .get()
         )
@@ -80,21 +81,19 @@ class PostsInternal extends React.Component {
         .catch(err => console.log(err));
     }
   }
-  componentDidMount() {
-    this.fetchPosts();
-  }
+
   render() {
     return (
       <div style={{ width: "100%" }}>
         <List style={{ width: "100%" }}>
           {this.state.posts.map((post, index) => (
-            <ListItem style={{ width: "100%" }} divider={false} key={post.id}>
+            <ListItem divider={false} key={post.id}>
               <Post
                 style={{ width: "100%" }}
                 key={post.id}
                 post={post.data()}
                 author={this.state.authors[index].data()}
-                isAdmin={false}
+                isAdmin={window.currentUserPermissionLevel}
                 actionHandler={(type, payload) => undefined}
               />
             </ListItem>
@@ -104,8 +103,9 @@ class PostsInternal extends React.Component {
         <VisibilitySensor
           onChange={isVisible =>
             isVisible === true
-              ? this.setState({ loading: true }, this.fetchPosts())
+              ? this.setState({ loading: true }, this.fetchPosts)
               : null}
+          delayedCall={true}
         />
         {window.currentUserPermissionLevel ? (
           <Button
@@ -115,8 +115,8 @@ class PostsInternal extends React.Component {
             style={{
               margin: 0,
               top: "auto",
-              right: 80,
-              bottom: 80,
+              right: 40,
+              bottom: 40,
               left: "auto",
               position: "fixed"
             }}

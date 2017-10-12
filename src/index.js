@@ -5,6 +5,7 @@ import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 import "typeface-roboto";
 import firebase from "firebase";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 var config = {
   apiKey: "AIzaSyBz7tiiKQ521ks-V4mpJB5tEFVJLtack_4",
@@ -16,5 +17,10 @@ var config = {
 };
 firebase.initializeApp(config);
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>,
+  document.getElementById("root")
+);
 registerServiceWorker();
