@@ -27,7 +27,7 @@ export default class extends React.Component {
   props: {
     post: Post,
     author: User,
-    // comments: Array<{ content: string, user: User }>,
+    comments: Array<{ content: string, author: User, id: string }>,
     isAdmin: boolean,
     actionHandler: (type: string, payload: any) => undefined
   };
@@ -35,6 +35,8 @@ export default class extends React.Component {
     return (
       <Card style={{ width: "100%" }}>
         <CardHeader
+          onClick={() =>
+            this.props.actionHandler("navToUser", this.props.author.id)}
           avatar={
             this.props.author.photoUrl ? (
               <Avatar src={this.props.author.photoUrl} />
@@ -60,10 +62,11 @@ export default class extends React.Component {
             <DeleteIcon />
           </IconButton>
         </CardActions>
-        {/* <Collapse>
+        <Collapse>
           <List>
             {this.props.comments.map(comment => (
               <Comment
+                key={comment.id}
                 user={comment.author}
                 isAdmin={this.props.isAdmin}
                 content={comment.content}
@@ -81,7 +84,7 @@ export default class extends React.Component {
               />
             ))}
           </List>
-        </Collapse> */}
+        </Collapse>
       </Card>
     );
   }

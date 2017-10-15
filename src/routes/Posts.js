@@ -12,7 +12,13 @@ import PostNew from "./Post-New";
 class PostsInternal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { posts: [], authors: [], loading: false, openNewPost: false };
+    this.state = {
+      posts: [],
+      authors: [],
+      commentss: [],
+      loading: false,
+      openNewPost: false
+    };
   }
   fetchPosts() {
     if (
@@ -35,16 +41,44 @@ class PostsInternal extends React.Component {
         )
         .then(querySnapshot =>
           Promise.all(
-            querySnapshot.docs.map(doc =>
-              doc
-                .data()
-                .author.get()
-                .then(authorDoc =>
+            querySnapshot.docs.map(
+              doc =>
+                Promise.all([
+                  doc.data().author.get(),
+                  doc.ref
+                    .collection("comments")
+                    .orderBy("createTime", "desc")
+                    .get()
+                    .then(commentsQuerySnapshot =>
+                      Promise.all(
+                        commentsQuerySnapshot.docs.map(commentDoc =>
+                          commentDoc
+                            .data()
+                            .author.get()
+                            .then(commentAuthorDoc => ({
+                              ...commentDoc.data(),
+                              author: commentAuthorDoc.data(),
+                              id: commentDoc.id
+                            }))
+                        )
+                      )
+                    )
+                ]).then(resolvedData =>
                   setState(this, (prevState, props) => ({
                     posts: [...prevState.posts, doc],
-                    authors: [...prevState.authors, authorDoc]
+                    authors: [...prevState.authors, resolvedData[0]],
+                    commentss: [...prevState.commentss, resolvedData[1]]
                   }))
                 )
+              // doc
+              //   .data()
+              //   .author.get()
+              //   .then(authorDoc =>
+              //     setState(this, (prevState, props) => ({
+              //       posts: [...prevState.posts, doc],
+              //       authors: [...prevState.authors, authorDoc]
+              //     }))
+              //   )
             )
           )
         )
@@ -64,16 +98,43 @@ class PostsInternal extends React.Component {
         )
         .then(querySnapshot =>
           Promise.all(
-            querySnapshot.docs.map(doc =>
-              doc
-                .data()
-                .author.get()
-                .then(authorDoc =>
+            querySnapshot.docs.map(
+              doc =>
+                Promise.all([
+                  doc.data().author.get(),
+                  doc.ref
+                    .collection("comments")
+                    .orderBy("createTime", "desc")
+                    .get()
+                    .then(commentsQuerySnapshot =>
+                      Promise.all(
+                        commentsQuerySnapshot.docs.map(commentDoc =>
+                          commentDoc
+                            .data()
+                            .author.get()
+                            .then(commentAuthorDoc => ({
+                              ...commentDoc.data(),
+                              author: commentAuthorDoc.data()
+                            }))
+                        )
+                      )
+                    )
+                ]).then(resolvedData =>
                   setState(this, (prevState, props) => ({
                     posts: [...prevState.posts, doc],
-                    authors: [...prevState.authors, authorDoc]
+                    authors: [...prevState.authors, resolvedData[0]],
+                    commentss: [...prevState.commentss, resolvedData[1]]
                   }))
                 )
+              // doc
+              //   .data()
+              //   .author.get()
+              //   .then(authorDoc =>
+              //     setState(this, (prevState, props) => ({
+              //       posts: [...prevState.posts, doc],
+              //       authors: [...prevState.authors, authorDoc]
+              //     }))
+              //   )
             )
           )
         )
@@ -92,7 +153,11 @@ class PostsInternal extends React.Component {
                 style={{ width: "100%" }}
                 key={post.id}
                 post={post.data()}
-                author={this.state.authors[index].data()}
+                author={{
+                  ...this.state.authors[index].data(),
+                  id: this.state.authors[index].id
+                }}
+                comments={this.state.commentss[index]}
                 isAdmin={window.currentUserPermissionLevel}
                 actionHandler={(type, payload) => {
                   if (type === "delete") {
@@ -109,6 +174,35 @@ class PostsInternal extends React.Component {
                         alert("Post delete fail");
                         console.log(err);
                       });
+                  }
+                  if (
+                    type === "comment" &&
+                    typeof payload === "string" &&
+                    payload
+                  ) {
+                    firebase
+                      .firestore()
+                      .collection("adminPosts")
+                      .doc(post.id)
+                      .collection("comments")
+                      .add({
+                        author: firebase
+                          .firestore()
+                          .collection("users")
+                          .doc(firebase.auth().currentUser.uid),
+                        createTime: Math.floor(Date.now() / 1000),
+                        authorId: firebase.auth().currentUser.uid,
+                        content: payload
+                      })
+                      .then(() => {
+                        this.setState({ posts: [] }, () => this.fetchPosts());
+                      })
+                      .catch(err => {
+                        alert("Comment fail");
+                        console.log(err);
+                      });
+                  } else if (type === "comment") {
+                    alert("Empty Comment");
                   }
                 }}
               />
