@@ -94,7 +94,23 @@ class PostsInternal extends React.Component {
                 post={post.data()}
                 author={this.state.authors[index].data()}
                 isAdmin={window.currentUserPermissionLevel}
-                actionHandler={(type, payload) => undefined}
+                actionHandler={(type, payload) => {
+                  if (type === "delete") {
+                    firebase
+                      .firestore()
+                      .collection("adminPosts")
+                      .doc(post.id)
+                      .delete()
+                      .then(() => {
+                        alert("Post Deleted");
+                        this.setState({ posts: [] }, () => this.fetchPosts());
+                      })
+                      .catch(err => {
+                        alert("Post delete fail");
+                        console.log(err);
+                      });
+                  }
+                }}
               />
             </ListItem>
           ))}
@@ -129,6 +145,8 @@ class PostsInternal extends React.Component {
         <PostNew
           open={this.state.openNewPost}
           onClose={() => this.setState({ openNewPost: false })}
+          onNewPost={() =>
+            this.setState({ posts: [] }, () => this.fetchPosts())}
         />
       </div>
     );
