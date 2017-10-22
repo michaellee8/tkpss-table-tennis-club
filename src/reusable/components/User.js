@@ -36,42 +36,65 @@ export default class extends React.Component {
           subheader={<span>{"since " + this.props.user.joinYear}</span>}
         />
         <CardContent>
+          {this.props.showAllData ? (
+            <Typography type="body1">
+              <span>
+                {this.props.user.info.name +
+                  " " +
+                  this.props.user.info.class +
+                  " " +
+                  this.props.user.info.classNo}
+              </span>
+            </Typography>
+          ) : null}
           <Typography type="display2">
-            <span>{this.props.user.score}</span>
+            <span>{"Lv " + this.props.user.level}</span>
           </Typography>
-          <Typography type="body1">
-            <span>{"Email: " + this.props.user.email}</span>
-          </Typography>
+          {this.props.showAllData ? (
+            <div>
+              <Typography type="display2">
+                <span>{this.props.user.score}</span>
+              </Typography>
+              <Typography type="body1">
+                <span>{"Number of stones: " + this.props.user.stones}</span>
+              </Typography>
+              <Typography type="body1">
+                <span>{"Email: " + this.props.user.email}</span>
+              </Typography>
+            </div>
+          ) : null}
           <Typography type="body1">
             <span>
               {"Admin: " + (this.props.user.permission > 0 ? "Yes" : "No")}
             </span>
           </Typography>
         </CardContent>
-        <CardContent>
-          <RadarChart
-            cx={170}
-            cy={170}
-            outerRadius={100}
-            width={340}
-            height={340}
-            data={Object.keys(this.props.user.stats).map(key => ({
-              key: key.toUpperCase() + " " + this.props.user.stats[key],
-              stat: this.props.user.stats[key]
-            }))}
-          >
-            <PolarGrid />
-            <PolarAngleAxis dataKey="key" />
-            <PolarRadiusAxis />
-            <Radar
-              name="Mike"
-              dataKey="stat"
-              stroke="#8884d8"
-              fill="#8884d8"
-              fillOpacity={0.6}
-            />
-          </RadarChart>
-        </CardContent>
+        {this.props.showAllData ? (
+          <CardContent>
+            <RadarChart
+              cx={170}
+              cy={170}
+              outerRadius={100}
+              width={340}
+              height={340}
+              data={Object.keys(this.props.user.stats).map(key => ({
+                key: key.toUpperCase() + " " + this.props.user.stats[key],
+                stat: this.props.user.stats[key]
+              }))}
+            >
+              <PolarGrid />
+              <PolarAngleAxis dataKey="key" />
+              <PolarRadiusAxis />
+              <Radar
+                name="Mike"
+                dataKey="stat"
+                stroke="#8884d8"
+                fill="#8884d8"
+                fillOpacity={0.6}
+              />
+            </RadarChart>
+          </CardContent>
+        ) : null}
       </Card>
     );
   }
