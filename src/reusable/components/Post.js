@@ -22,8 +22,15 @@ import Linkify from "react-linkify";
 import Comment from "./Comment";
 import DeleteIcon from "material-ui-icons/Delete";
 import IconButton from "material-ui/IconButton";
+import TextField from "material-ui/TextField";
+import SendIcon from "material-ui-icons/Send";
+import ExpandMoreIcon from "material-ui-icons/ExpandMore";
 
 export default class extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { comment: "", expand: false };
+  }
   props: {
     post: Post,
     author: User,
@@ -50,9 +57,19 @@ export default class extends React.Component {
           }
         />
         <CardContent>
-          <Typography component="p">{this.props.post.content}</Typography>
+          <Typography component="p">
+            <Linkify>{this.props.post.content}</Linkify>
+          </Typography>
         </CardContent>
         <CardActions>
+          <IconButton
+            onClick={() =>
+              this.setState(prevState => ({
+                expand: !prevState.expand
+              }))}
+          >
+            <ExpandMoreIcon />
+          </IconButton>
           <div
             style={{
               flex: "1 1 auto"
@@ -62,7 +79,28 @@ export default class extends React.Component {
             <DeleteIcon />
           </IconButton>
         </CardActions>
-        <Collapse>
+        <Collapse
+          in={this.state.expand}
+          transitionDuration="auto"
+          unmountOnExit
+        >
+          <div>
+            <TextField
+              style={{ width: "70%" }}
+              label="Comment"
+              placeholder="Comment"
+              value={this.state.comment}
+              onChange={event => this.setState({ comment: event.target.value })}
+            />
+            <IconButton
+              onClick={() => {
+                this.props.actionHandler("comment", this.state.comment);
+                this.setState({ comment: "" });
+              }}
+            >
+              <SendIcon />
+            </IconButton>
+          </div>
           <List>
             {this.props.comments.map(comment => (
               <Comment
@@ -74,6 +112,7 @@ export default class extends React.Component {
                   switch (type) {
                     case "delete":
                       this.props.actionHandler("deleteComment", comment.id);
+                      console.log(comment.id);
                       break;
                     case "navToWriter":
                       this.props.actionHandler("navToUser", comment.authorId);

@@ -20,7 +20,7 @@ class PostsInternal extends React.Component {
       openNewPost: false
     };
   }
-  fetchPosts() {
+  fetchPosts = () => {
     if (
       this.state.posts &&
       this.state.posts.length &&
@@ -55,11 +55,13 @@ class PostsInternal extends React.Component {
                           commentDoc
                             .data()
                             .author.get()
-                            .then(commentAuthorDoc => ({
-                              ...commentDoc.data(),
-                              author: commentAuthorDoc.data(),
-                              id: commentDoc.id
-                            }))
+                            .then(commentAuthorDoc => {
+                              return {
+                                ...commentDoc.data(),
+                                author: commentAuthorDoc.data(),
+                                id: commentDoc.id
+                              };
+                            })
                         )
                       )
                     )
@@ -114,7 +116,8 @@ class PostsInternal extends React.Component {
                             .author.get()
                             .then(commentAuthorDoc => ({
                               ...commentDoc.data(),
-                              author: commentAuthorDoc.data()
+                              author: commentAuthorDoc.data(),
+                              id: commentDoc.id
                             }))
                         )
                       )
@@ -141,7 +144,7 @@ class PostsInternal extends React.Component {
         .then(res => setState(this, { loading: false }))
         .catch(err => console.log(err));
     }
-  }
+  };
 
   render() {
     return (
@@ -160,6 +163,9 @@ class PostsInternal extends React.Component {
                 comments={this.state.commentss[index]}
                 isAdmin={window.currentUserPermissionLevel}
                 actionHandler={(type, payload) => {
+                  if (type === "navToUser" && typeof payload === "string") {
+                    this.props.history.push("/users/" + payload);
+                  }
                   if (type === "delete") {
                     firebase
                       .firestore()
@@ -203,6 +209,27 @@ class PostsInternal extends React.Component {
                       });
                   } else if (type === "comment") {
                     alert("Empty Comment");
+                  }
+                  if (
+                    type === "deleteComment" &&
+                    typeof payload === "string" &&
+                    payload
+                  ) {
+                    firebase
+                      .firestore()
+                      .collection("adminPosts")
+                      .doc(post.id)
+                      .collection("comments")
+                      .doc(payload)
+                      .delete()
+                      .then(() => {
+                        alert("Comment deleted");
+                        this.setState({ posts: [] }, () => this.fetchPosts());
+                      })
+                      .catch(err => {
+                        alert("Comment fail");
+                        console.log(err);
+                      });
                   }
                 }}
               />
