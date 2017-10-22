@@ -13,6 +13,13 @@ exports.createNewUser = functions.auth.user().onCreate(event => {
     photoUrl: event.data.photoURL,
     remark: null,
     score: 55,
+    stones: 0,
+    level: 0,
+    info: {
+      name: "New user",
+      class: "7E",
+      classNo: 0
+    },
     stats: {
       atk: 50,
       cot: 50,
