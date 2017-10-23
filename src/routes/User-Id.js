@@ -74,13 +74,15 @@ export default class UserId extends React.Component {
             </Button>
           ) : null}
 
-          <UserEditor
-            open={this.state.openEditor}
-            onClose={() =>
-              this.setState({ openEditor: false }, () => this.fetchUser())}
-            userId={this.props.match.params.id}
-            user={this.state.user}
-          />
+          {window.currentUserPermissionLevel ? (
+            <UserEditor
+              open={this.state.openEditor}
+              onClose={() =>
+                this.setState({ openEditor: false }, () => this.fetchUser())}
+              userId={this.props.match.params.id}
+              user={this.state.user}
+            />
+          ) : null}
         </div>
       );
     }
