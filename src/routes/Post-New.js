@@ -30,7 +30,7 @@ export default class extends React.Component {
       });
   render() {
     return (
-      <Dialog open={this.props.open}>
+      <Dialog fullScreen open={this.props.open}>
         <DialogTitle>{this.state.title}</DialogTitle>
         <TextField
           label="Content"
