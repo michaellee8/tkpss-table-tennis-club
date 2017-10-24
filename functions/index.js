@@ -11,7 +11,7 @@ exports.createNewUser = functions.auth.user().onCreate(event => {
     lastLoginTime: null,
     permission: 0,
     photoUrl: event.data.photoURL,
-    remark: null,
+    remark: "",
     score: 55,
     stones: 0,
     level: 0,

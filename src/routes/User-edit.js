@@ -42,63 +42,72 @@ export default class extends React.Component {
       });
   render() {
     return (
-      <Dialog fullScreen style={{ width: "100%" }} open={this.props.open}>
+      <Dialog fullWidth style={{ width: "100%" }} open={this.props.open}>
         <DialogTitle>{"Editing " + this.props.user.displayName}</DialogTitle>
         {Object.keys(this.state.editedUserData).map(
           key =>
-            typeof this.props.user[key] === "object" ? (
+            typeof this.props.user[key] === "object" &&
+            this.props.user !== null ? (
               Object.keys(this.state.editedUserData[key]).map(innerKey => (
+                <div style={{ width: "100%" }}>
+                  {" "}
+                  <TextField
+                    style={{ width: "100%" }}
+                    type={
+                      typeof this.props.user[key][innerKey] === "number"
+                        ? "number"
+                        : "string"
+                    }
+                    label={key + "." + innerKey}
+                    placeholder={this.props.user[key][innerKey].toString()}
+                    value={this.state.editedUserData[key][innerKey]}
+                    onChange={event => {
+                      event.persist();
+                      console.log(event);
+                      this.setState(prevState => ({
+                        editedUserData: {
+                          ...prevState.editedUserData,
+                          [key]: {
+                            ...prevState.editedUserData[key],
+                            [innerKey]:
+                              typeof this.props.user[key][innerKey] === "number"
+                                ? parseInt(event.target.value)
+                                : event.target.value
+                          }
+                        }
+                      }));
+                    }}
+                  />
+                </div>
+              ))
+            ) : (
+              <div style={{ width: "100%" }}>
+                {" "}
                 <TextField
+                  style={{ width: "100%" }}
                   type={
-                    typeof this.props.user[key][innerKey] === "number" ? (
-                      "number"
-                    ) : (
-                      "string"
-                    )
+                    typeof this.props.user[key] === "number"
+                      ? "number"
+                      : "string"
                   }
-                  label={key + "." + innerKey}
-                  placeholder={this.props.user[key][innerKey].toString()}
-                  value={this.state.editedUserData[key][innerKey]}
+                  label={key}
+                  placeholder={this.props.user[key].toString()}
+                  value={this.state.editedUserData[key]}
                   onChange={event => {
                     event.persist();
                     console.log(event);
                     this.setState(prevState => ({
                       editedUserData: {
                         ...prevState.editedUserData,
-                        [key]: {
-                          ...prevState.editedUserData[key],
-                          [innerKey]:
-                            typeof this.props.user[key][innerKey] === "number"
-                              ? parseInt(event.target.value)
-                              : event.target.value
-                        }
+                        [key]:
+                          typeof this.props.user[key] === "number"
+                            ? parseInt(event.target.value)
+                            : event.target.value
                       }
                     }));
                   }}
                 />
-              ))
-            ) : (
-              <TextField
-                type={
-                  typeof this.props.user[key] === "number" ? "number" : "string"
-                }
-                label={key}
-                placeholder={this.props.user[key].toString()}
-                value={this.state.editedUserData[key]}
-                onChange={event => {
-                  event.persist();
-                  console.log(event);
-                  this.setState(prevState => ({
-                    editedUserData: {
-                      ...prevState.editedUserData,
-                      [key]:
-                        typeof this.props.user[key] === "number"
-                          ? parseInt(event.target.value)
-                          : event.target.value
-                    }
-                  }));
-                }}
-              />
+              </div>
             )
         )}
         <DialogActions>
