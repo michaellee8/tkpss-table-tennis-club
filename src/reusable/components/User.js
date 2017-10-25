@@ -84,7 +84,7 @@ export default class extends React.Component {
             >
               <PolarGrid />
               <PolarAngleAxis dataKey="key" />
-              <PolarRadiusAxis />
+              <PolarRadiusAxis domain={[0, 100]} />
               <Radar
                 name="Mike"
                 dataKey="stat"
