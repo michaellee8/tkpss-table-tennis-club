@@ -75,9 +75,11 @@ export default class extends React.Component {
               flex: "1 1 auto"
             }}
           />
-          <IconButton onClick={() => this.props.actionHandler("delete")}>
-            <DeleteIcon />
-          </IconButton>
+          {this.props.isAdmin ? (
+            <IconButton onClick={() => this.props.actionHandler("delete")}>
+              <DeleteIcon />
+            </IconButton>
+          ) : null}
         </CardActions>
         <Collapse
           in={this.state.expand}
