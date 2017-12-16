@@ -36,17 +36,15 @@ export default class extends React.Component {
           subheader={<span>{"since " + this.props.user.joinYear}</span>}
         />
         <CardContent>
-          {this.props.showAllData ? (
-            <Typography type="body1">
-              <span>
-                {this.props.user.info.name +
-                  " " +
-                  this.props.user.info.class +
-                  " " +
-                  this.props.user.info.classNo}
-              </span>
-            </Typography>
-          ) : null}
+          <Typography type="body1">
+            <span>
+              {this.props.user.info.name +
+                " " +
+                this.props.user.info.class +
+                " " +
+                this.props.user.info.classNo}
+            </span>
+          </Typography>
           <Typography type="display2">
             <span>{"Lv " + this.props.user.level}</span>
           </Typography>
