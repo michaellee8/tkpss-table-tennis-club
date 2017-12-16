@@ -6,7 +6,7 @@ exports.createNewUser = functions.auth.user().onCreate(event => {
   var newUser = {
     createTime: Math.floor(Date.now() / 1000),
     displayName: event.data.displayName,
-    email: event.data.email,
+    email: event.data.email ? event.data.email : "unknown",
     joinYear: new Date().getFullYear(),
     lastLoginTime: null,
     permission: 0,
