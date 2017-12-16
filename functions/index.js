@@ -36,3 +36,11 @@ exports.createNewUser = functions.auth.user().onCreate(event => {
     .doc(event.data.uid)
     .set(newUser);
 });
+
+exports.deleteUser = functions.auth.user().onDelete(event =>
+  admin
+    .firestore()
+    .collection("users")
+    .doc(event.data.uid)
+    .delete()
+);
